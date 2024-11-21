@@ -1,5 +1,6 @@
 package com.example.navigationcompose.ui.view.screen
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,5 +24,7 @@ fun RencanaStudyView(
         mutableStateOf("")
     }
     var listData: MutableList<String> = mutableListOf(chosenDropdown, pilihanKelas)
+    Column {
 
+    }
 }

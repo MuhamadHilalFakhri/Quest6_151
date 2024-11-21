@@ -2,6 +2,7 @@ package com.example.navigationcompose.ui.view.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,6 +35,11 @@ fun RencanaStudyView(
             .fillMaxSize()
             .background(color = colorResource(id = R.color.primary))
     ) {
+        Row (
+
+        ){
+
+        }
 
     }
 }

@@ -18,5 +18,7 @@ fun RencanaStudyView(
             ""
         )
     }
+    var checked by remember { mutableStateOf(false) }
+
 
 }

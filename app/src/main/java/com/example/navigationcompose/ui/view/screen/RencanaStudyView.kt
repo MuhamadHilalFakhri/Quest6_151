@@ -4,6 +4,7 @@ import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.content.MediaType.Companion.Text
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -82,11 +83,11 @@ fun RencanaStudyView(
                     fontSize = 15.sp,
                     color = Color.White
                 )
-
-
             }
+        }
+        Box(
 
-
+        ){
 
         }
 

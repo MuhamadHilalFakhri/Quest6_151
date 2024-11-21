@@ -1,19 +1,29 @@
 package com.example.navigationcompose.ui.view.screen
 
+import android.widget.Button
 import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.content.MediaType.Companion.Text
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,17 +37,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.navigationcompose.R
+import com.example.navigationcompose.data.MataKuliah
+import com.example.navigationcompose.data.RuangKelas
 import com.example.navigationcompose.model.Mahasiswa
+import com.example.navigationcompose.navigation.Halaman
+import com.example.navigationcompose.ui.widget.DynamicSelectTextField
 
 @Composable
 fun RencanaStudyView(
     mahasiswa: Mahasiswa,
     onSubmitButtonClicked: (MutableList<String>) -> Unit,
-    onBackButtonCLicked: () -> Unit
-){
+    onBackButtonCLicked: () -> Unit,
+    navController: NavHostController
+) {
     var chosenDropdown by remember {
         mutableStateOf(
             ""
@@ -53,11 +70,11 @@ fun RencanaStudyView(
             .fillMaxSize()
             .background(color = colorResource(id = R.color.primary))
     ) {
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp), verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.umy),
                 contentDescription = "",
@@ -69,11 +86,11 @@ fun RencanaStudyView(
 
             Spacer(modifier = Modifier.padding(start = 16.dp))
 
-            Column (
+            Column(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                   text = mahasiswa.nama,
+                    text = mahasiswa.nama,
                     fontWeight = FontWeight.Bold,
                     fontSize = 15.sp,
                     color = Color.White
@@ -81,8 +98,15 @@ fun RencanaStudyView(
                 Text(
                     text = mahasiswa.nim,
                     fontWeight = FontWeight.Light,
-                    fontSize = 15.sp,
+                    fontSize = 12.sp,
                     color = Color.White
+                )
+            }
+            Box{
+                Icon(
+                    imageVector = Icons.Filled.Notifications,
+                    contentDescription = "",
+                    tint = Color.White
                 )
             }
         }
@@ -95,9 +119,86 @@ fun RencanaStudyView(
                         topStart = 15.dp
                     )
                 )
-        ){
+                .fillMaxSize(),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                Text(text = "Pilih Mata Kuliah Peminatan", fontWeight = FontWeight.Bold)
+                Text(
+                    text = "Silahkan pilih mata kuliah yang Anda inginkan",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Light
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                DynamicSelectTextField(
+                    selectedValue = chosenDropdown,
+                    options = MataKuliah.options,
+                    label = "Mata Kuliah",
+                    onValueChangedEvent = {
+                        chosenDropdown = it
+                    }
+                )
+                Spacer(modifier = Modifier.padding(8.dp))
+                HorizontalDivider()
+                Spacer(modifier = Modifier.padding(8.dp))
+                Text(
+                    text = "Silahkan pilih kelas dari mata kuliah yang anda inginkan",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Light
+                )
+                Spacer(modifier = Modifier.padding(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    RuangKelas.kelas.forEach { data ->
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            RadioButton(
+                                selected = pilihanKelas == data,
+                                onClick = { pilihanKelas = data }
+                            )
+                            Text(data)
+                        }
 
+                    }
+                }
+                Spacer(modifier = Modifier.padding(8.dp))
+                HorizontalDivider()
+                Spacer(modifier = Modifier.padding(8.dp))
+                Text(text = "Klausul Persetujuan Mahasiswa", fontWeight = FontWeight.Bold)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = checked,
+                        onCheckedChange = { checked = it },
+                        enabled = chosenDropdown.isNotBlank() && pilihanKelas.isNotBlank()
+                    )
+                    Text(
+                        text = "Saya menyetujui setiap pernyataan yang ada tanpa ada paksaan dari pihak manapun.",
+                        fontWeight = FontWeight.Light, fontSize = 10.sp
+                    )
+                }
+                Spacer(modifier = Modifier.padding(8.dp))
+                Row (
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ){
+                    Button(onClick = {onBackButtonCLicked()}){
+                        Text(text = "Kembali")
+                    }
+                    Button(
+                        onClick = {
+                            onSubmitButtonClicked(listData) // Simpan data rencana studi
+                            navController.navigate(Halaman.Tampil.name) // Navigasi ke halaman Tampil
+                        },
+                        enabled = checked
+                    ) {
+                        Text(text = "Simpan")
+                    }
+                }
+            }
         }
-
     }
 }

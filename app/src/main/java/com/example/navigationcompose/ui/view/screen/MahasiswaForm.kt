@@ -41,7 +41,7 @@ import com.example.navigationcompose.R
 
 @Composable
 fun MahasiswaFormView(
-    onSubmitButton: (MutableList<String>) -> Unit,
+    onSubmitButtonClicked: (MutableList<String>) -> Unit,
     onBackButtonClicked: () -> Unit
 ){
 
@@ -181,7 +181,7 @@ fun MahasiswaFormView(
                     }
                     Button(
                         onClick = {
-                            onSubmitButton(listData)
+                            onSubmitButtonClicked(listData)
                         }
                     ) {
                         Text(text = "Simpan")

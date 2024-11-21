@@ -7,6 +7,6 @@ object MataKuliah {
         "Prototyping",
         "Aplikasi Multimedia",
         "Kecerdasan Buatan",
-        "Computer Vision"
+        "Computer Vision",
     )
 }

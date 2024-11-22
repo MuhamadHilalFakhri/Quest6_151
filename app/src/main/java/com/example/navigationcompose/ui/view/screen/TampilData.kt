@@ -123,7 +123,7 @@ fun TampilView(
                     Text(text = "Back")
                 }
                 Button(onClick = { onNextButtonClicked() }) {
-                    Text(text = "Next")
+                    Text(text = "Halaman Utama")
                 }
             }
         }
